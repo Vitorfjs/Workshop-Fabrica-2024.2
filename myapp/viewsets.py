@@ -2,45 +2,28 @@ import requests
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from .models import Character
-from django.http import HttpResponse
 from .serializers import CharacterSerializer
+from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 
-class CharacterViewsSet(viewsets.ModelViewSet):
+class CharacterFilter(filters.FilterSet):
+    name = filters.CharFilter(lookup_expr='icontains')
+    
+    class Meta:
+        model = Character
+        fields = ['name']
+
+class CharacterViewSet(viewsets.ModelViewSet):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    
-    def home(request):
-        return HttpResponse("<h1>Bem vindo a Star Wars API</h1><p>Vá para <a href='/api/characters/'>Characters</a> para ver a lista de personagens.</p>")
-    
-    @action(detail=True, methods=['post'])
-    def create_character(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    @action(detail=True, methods=['put', 'patch'])
-    def update_character(self, request, pk=None):
-        character = self.get_object()
-        serializer = self.get_serializer(character, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    @action(detail=True, methods=['delete'])    
-    def delete_character(self, request, pk=None):
-        character = self.get_object()
-        character.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = CharacterFilter
+
     def list(self, request):
-        #listar personagens da Star Wars API
+        # Sincronizar dados da API externa com o banco de dados
         response = requests.get('https://swapi.dev/api/people/')
-        data = response.json()['results']
+        data = response.json().get('results', [])
         
         characters = []
         
@@ -58,6 +41,21 @@ class CharacterViewsSet(viewsets.ModelViewSet):
                 }
             )
             characters.append(character)
-            
+        
         serializer = CharacterSerializer(characters, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def create_character(self, request):
+        # Criação de personagem não é necessário aqui, ModelViewSet já lida com isso
+        return Response({'detail': 'Não permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def update_character(self, request, pk=None):
+        # Atualização de personagem não é necessário aqui, ModelViewSet já lida com isso
+        return Response({'detail': 'Não permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    @action(detail=True, methods=['delete'])
+    def delete_character(self, request, pk=None):
+        # Exclusão de personagem não é necessário aqui, ModelViewSet já lida com isso
+        return Response({'detail': 'Não permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
