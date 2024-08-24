@@ -20,6 +20,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+# Configura a visualização do esquema da API usando Swagger
 schema_view = get_schema_view(
     openapi.Info(
         title="Star Wars API",
@@ -29,12 +30,13 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="contact@starwars.local"),
         license=openapi.License(name="BSD License"),
     ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
+    public=True, # Define a API como pública
+    permission_classes=(permissions.AllowAny,), # Permite acesso sem autenticação
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # URL para acessar a documentação da API com Swagger
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'), 
 ]
