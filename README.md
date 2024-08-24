@@ -1,6 +1,6 @@
 # 🚀 Projeto Django: API de Personagens Star Wars
 
-Este é um projeto Django que consiste em um aplicativo que utiliza a estrutura de viewsets Django REST Framework para exibir dados e realizar outras operações CRUD. O projeto consome dados da Star Wars API (SWAPI) para gerenciar informações sobre personagens do universo Star Wars. A API permite listar, filtrar, e sincronizar dados desses personagens em um banco de dados local.
+Este é um projeto Django que consiste em um aplicativo que utiliza a estrutura de viewsets Django REST Framework para exibir dados e realizar outras operações CRUD. O projeto consome dados da Star Wars API (SWAPI) para gerenciar informações sobre personagens do universo Star Wars. A API permite listar, filtrar e sincronizar dados desses personagens em um banco de dados local.
 
 ## 🌟 Funcionalidades
 
@@ -152,3 +152,17 @@ Atualiza parcialmente as informações de um personagem específico.
 DELETE /api/characters/<id>/
 ```
 Remove um personagem específico do banco de dados.
+
+## 🔄 Atualizações e Contribuições
+#### 1. **Contribuição:** Se você deseja contribuir para o projeto, por favor, envie pull requests e siga as diretrizes de contribuição descritas na documentação.
+#### 2. **Atualizações:** Para atualizar o projeto, execute os comandos necessários e verifique se há novas dependências ou alterações.
+
+## 🗂️ Estrutura do Projeto
+
+- myapp/: Contém o código do aplicativo principal.
+- myapp/models.py: Define os modelos do Django.
+- myapp/serializers.py: Define os serializers da API.
+- myapp/viewsets.py: Define os viewsets da API.
+- myapp/urls.py: Configura as URLs do aplicativo.
+- manage.py: Script para gerenciar o projeto Django.
+
