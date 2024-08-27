@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,14 +79,16 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+SECRET_KEY = config('SECRET_KEY')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MeuBancoDjango',  # Nome do banco de dados que você criou no MySQL
-        'USER': 'sqluser',             # Nome de usuário do MySQL
-        'PASSWORD': 'worksql@dm24!',           # Senha do usuário do MySQL
-        'HOST': '127.0.0.1',               # Ou 'localhost'
-        'PORT': '3306',                    # Porta padrão do MySQL
+        'NAME': config('PG_DATABASE'),
+        'USER': config('PG_USERNAME'),
+        'PASSWORD': config('PG_PASSWORD'),          
+        'HOST': config('PG_HOST'),               
+        'PORT': config('PG_PORT'),                    
     }
 }
 
